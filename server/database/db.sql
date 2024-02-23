@@ -28,17 +28,21 @@ create table products (
 	pid int primary key auto_increment,
 	pname varchar(50),
 	price double,
+	image varchar(100),
 	cid int,
 	sid int,
 	foreign key(cid) references category(cid),
 	foreign key(sid) references subcategory(sid)
 	);
 
+-- with image
 insert into products values
-	( 0, 'Gold Neckless', 80000.0, 1, 1 ),
-	( 0, 'Gold Ring', 60000.0, 1, 2 ),
-	( 0, 'Gold Earring', 40000.0, 1, 3 ),
-	( 0, 'Gold Nose Ring', 20000.0, 1, 4 );
+	( 0, 'Gold Neckless', 80000.0, 'diamondEarring.png', 1, 1 ),
+	( 0, 'Gold Ring', 60000.0, 'goldRing.webp', 1, 2 ),
+	( 0, 'Gold Earring', 40000.0, 'goldEarring.webp', 1, 3 ),
+	( 0, 'Gold Nose Ring', 20000.0, 'goldNosering.webp', 1, 4 );
+
+-- without image (not used)
 insert into products values
 	( 0, 'Silver Neckless', 60000.0, 2, 1 ),
 	( 0, 'Silver Ring', 40000.0, 2, 2 ),
@@ -88,20 +92,34 @@ insert into subcategory values ( 4, 'Nose Ring' );
 
 -- 7. Cart
 -- cart_id, qty, p_id(FK) [not applicable]
-create table cart(
-	cart_id int primary key auto_increment,
-	uid int,
-	pid int,
-	qty int,
-	price double,
-	total double
+-- create table cart(
+-- 	cart_id int primary key auto_increment,
+-- 	uid int,
+-- 	pid int,
+-- 	qty int,
+-- 	price double,
+-- 	total double
+-- );
+
+CREATE TABLE cart (
+    cartId INT PRIMARY KEY AUTO_INCREMENT,
+    pid INT,
+    qty INT DEFAULT 1,
+	total double,
+    FOREIGN KEY (pid) REFERENCES products(pid)
 );
 
 -- manual insert for testing
-insert into cart values (0, 2, 1, 4, 80000, 320000);
-insert into cart values (0, 3, 2, 5, 60000, 300000);
+-- insert into cart values (0, 0, 1, 80000, 0);
+-- insert into cart values (0, 3, 2, 5, 60000, 300000);
 
 -- ============================================================================
 
 -- 8. Wishlist
 -- - w_id, qty, p_id(FK)
+
+CREATE TABLE wishlist (
+    wid INT PRIMARY KEY AUTO_INCREMENT,
+    pid INT,
+    FOREIGN KEY (pid) REFERENCES products(pid)
+);
